@@ -10,10 +10,15 @@ for the JupyterLab extension.
 ## Requirements
 
 * JupyterLab >= 2.1
+* NodeJs >= 10
 
 ## Install
 
 Note: You will need NodeJS to install the extension.
+Can be installed with
+```bash
+curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
+```
 
 ```bash
 pip install hdfsbrowser
@@ -27,11 +32,21 @@ jupyter lab build
 Configure notebook `jupyter_notebook_config.py`:
 
 ```
-c.HDFSBrowserConfig.hdfs_site_path = "/cvmfs/sft.cern.ch/lcg/etc/hadoop-confext/conf/etc/analytix/hadoop.analytix/hdfs-site.xml"
+# Location of the hdfs-site.xml file
+c.HDFSBrowserConfig.hdfs_site_path = "/etc/hadoop/conf/hdfs-site.xml"
+
+#This property in hdfs-site.xml will be used to find the hostnames of the namenodes
+# If you have the namenode IDs be different from their hostnames, you must create a new property with the hostnames
 c.HDFSBrowserConfig.hdfs_site_namenodes_property = "dfs.ha.namenodes.analytix"
+
 c.HDFSBrowserConfig.hdfs_site_namenodes_port = "50070"
+
+# Can be created with hdfs fetchdt --renewer "dummy" tokenfile, I think
 c.HDFSBrowserConfig.webhdfs_token = "dummy"
 ```
+
+This can be located in `~/.jupyter/jupyter_notebook_config.py`
+
 
 ## Troubleshoot
 
@@ -93,4 +108,6 @@ jupyter lab --watch
 ```bash
 pip uninstall hdfsbrowser
 jupyter labextension uninstall @swan-cern/hdfsbrowser
+# Rebuild JupyterLab after making any changes
+jupyter lab build
 ```
