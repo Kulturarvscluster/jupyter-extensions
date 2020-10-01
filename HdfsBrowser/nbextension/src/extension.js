@@ -6,6 +6,7 @@ function load_ipython_extension() {
 
     var handler = function () {
         // console.log("hdfsbrowser: ", Jupyter.notebook.base_url)
+        //TODO fix this so it points to https://kac-proj-018.kach.sblokalnet:8000/user/abrp018/hdfsbrowser/explorer.html, not hub/
         var iframe = $('\
                 <div style="overflow:hidden">\
                 <iframe src="'+ Jupyter.notebook.base_url + 'hdfsbrowser/explorer.html' + '" frameborder="0" scrolling="yes" class="hdfsbrowserframe">\

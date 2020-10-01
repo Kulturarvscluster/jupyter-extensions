@@ -81,12 +81,15 @@ class HDFSBrowserProxy(IPythonHandler):
                 namenodes = elem[1].text
                 break
 
+        # IF this looks for dfs.ha.namenodes.*, it should not assume that what it gets are hostnames
+        # These should be gotten from df.namenode.http-address.* instead then
         # get active namenode
         for namenode in namenodes.split(','):
             nmd_active_url = 'http://{0}:{1}/jmx?get=Hadoop:service=NameNode,name=NameNodeStatus::State'.format(
                 namenode, self.hdfs_browser_config.hdfs_site_namenodes_port)
 
             try:
+                # TODO If jmx uses Kerberos Auth this will fail...
                 response = yield AsyncHTTPClient().fetch(
                     HTTPRequest(nmd_active_url, connect_timeout=1),
                     raise_error=False
